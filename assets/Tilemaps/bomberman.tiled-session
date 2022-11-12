@@ -1,0 +1,51 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "level1.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "SNES - Super Bomberman - Battle Stage 03 Bomb Zone.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "bomb-zone.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "level1.tmx": {
+            "scale": 2.3670833333333334,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 64.63650765710261,
+                "y": 121.4574898785425
+            }
+        }
+    },
+    "last.imagePath": "C:/Users/leonm/OneDrive/Documents/dev/libgdx-projects/bomberman-clone/assets/Tilemaps",
+    "map.height": 13,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 15,
+    "openFiles": [
+        "level1.tmx",
+        "bomb-zone.tsx"
+    ],
+    "project": "bomberman.tiled-project",
+    "recentFiles": [
+        "bomb-zone.tsx",
+        "level1.tmx",
+        "SNES - Super Bomberman - Battle Stage 03 Bomb Zone.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}

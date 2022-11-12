@@ -1,31 +1,35 @@
 package com.tempura.bomberman;
 
-import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.tempura.bomberman.Screens.PlayScreen;
 
-public class BomberGame extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
+public class BomberGame extends Game {
+	public static final int V_WIDTH = 240;
+	public static final int V_HEIGHT = 208;
+	public static final float PPM = 100;
+	
+	public SpriteBatch batch;
+	
+	private PlayScreen playScreen;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		
+		playScreen = new PlayScreen(this);
+		this.setScreen(playScreen);
 	}
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(1, 0, 0, 1);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+		super.render();
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
+		playScreen.dispose();
 	}
 }
