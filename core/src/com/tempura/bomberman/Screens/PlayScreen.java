@@ -3,6 +3,8 @@ package com.tempura.bomberman.Screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -13,11 +15,11 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tempura.bomberman.BomberGame;
-import com.tempura.bomberman.Actors.Bomberman;
+import com.tempura.bomberman.Actors.Player;
 
 public class PlayScreen extends BomberScreen {
 	
-	private Game game;
+	private BomberGame game;
 	
 	private OrthographicCamera gameCam;
 	private Viewport gamePort;
@@ -29,10 +31,11 @@ public class PlayScreen extends BomberScreen {
 	
 	private World world;
 	private Box2DDebugRenderer b2dr;
+	private ShapeRenderer shapeRenderer;
 	
-	private Bomberman player;
+	private Player player;
 	
-	public PlayScreen (Game game) {
+	public PlayScreen (BomberGame game) {
 		this.game = game;
 		
 		gameCam = new OrthographicCamera();
@@ -44,15 +47,19 @@ public class PlayScreen extends BomberScreen {
 		world = new World(new Vector2(0, 0), true);
 		b2dr = new Box2DDebugRenderer();
 		
-		player = new Bomberman(world);
+		player = new Player(world);
 		
 		maploader = new TmxMapLoader();
 		map = maploader.load("Tilemaps/level1.tmx");
 		renderer = new OrthogonalTiledMapRenderer(map, 1 / BomberGame.PPM);
+		
+		shapeRenderer = new ShapeRenderer();
 	}
 	
 	private void update() {
 		player.handleInput();
+		
+		world.step(1/60f, 6, 2);
 		
 		gameCam.update();
 		renderer.setView(gameCam);
@@ -68,7 +75,12 @@ public class PlayScreen extends BomberScreen {
 		
 		b2dr.render(world, gameCam.combined);
 		
-		world.step(1/60f, 6, 2);
+		Vector2 pos = player.b2body.getWorldCenter();
+		
+		shapeRenderer.begin(ShapeType.Filled);
+		shapeRenderer.setColor(Color.BLUE);
+		shapeRenderer.circle(pos.x, pos.y, 8);
+		shapeRenderer.end();
 	}
 
 	@Override
