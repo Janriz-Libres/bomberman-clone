@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tempura.bomberman.BomberGame;
 import com.tempura.bomberman.Actors.Player;
+import com.tempura.bomberman.Objects.HeavyBlocks;
 
 public class PlayScreen extends BomberScreen {
 	
@@ -31,7 +32,6 @@ public class PlayScreen extends BomberScreen {
 	
 	private World world;
 	private Box2DDebugRenderer b2dr;
-	private ShapeRenderer shapeRenderer;
 	
 	private Player player;
 	
@@ -53,7 +53,7 @@ public class PlayScreen extends BomberScreen {
 		map = maploader.load("Tilemaps/level1.tmx");
 		renderer = new OrthogonalTiledMapRenderer(map, 1 / BomberGame.PPM);
 		
-		shapeRenderer = new ShapeRenderer();
+		new HeavyBlocks(world, map);
 	}
 	
 	private void update() {
@@ -74,13 +74,6 @@ public class PlayScreen extends BomberScreen {
 		renderer.render();
 		
 		b2dr.render(world, gameCam.combined);
-		
-		Vector2 pos = player.b2body.getWorldCenter();
-		
-		shapeRenderer.begin(ShapeType.Filled);
-		shapeRenderer.setColor(Color.BLUE);
-		shapeRenderer.circle(pos.x, pos.y, 8);
-		shapeRenderer.end();
 	}
 
 	@Override
