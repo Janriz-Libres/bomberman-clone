@@ -3,6 +3,7 @@ package com.tempura.bomberman.Screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -21,6 +22,7 @@ import com.tempura.bomberman.Objects.HeavyBlocks;
 public class PlayScreen extends BomberScreen {
 	
 	private BomberGame game;
+	private TextureAtlas atlas;
 	
 	private OrthographicCamera gameCam;
 	private Viewport gamePort;
@@ -36,6 +38,7 @@ public class PlayScreen extends BomberScreen {
 	private Player player;
 	
 	public PlayScreen (BomberGame game) {
+		atlas = new TextureAtlas("bomber_party.atlas");
 		this.game = game;
 		
 		gameCam = new OrthographicCamera();
@@ -47,7 +50,7 @@ public class PlayScreen extends BomberScreen {
 		world = new World(new Vector2(0, 0), true);
 		b2dr = new Box2DDebugRenderer();
 		
-		player = new Player(world);
+		player = new Player(world, this);
 		
 		maploader = new TmxMapLoader();
 		map = maploader.load("Tilemaps/level1.tmx");
@@ -56,10 +59,16 @@ public class PlayScreen extends BomberScreen {
 		new HeavyBlocks(world, map);
 	}
 	
+	public TextureAtlas getAtlas() {
+		return atlas;
+	}
+	
 	private void update() {
 		player.handleInput();
 		
 		world.step(1/60f, 6, 2);
+		
+		player.update();
 		
 		gameCam.update();
 		renderer.setView(gameCam);
@@ -74,6 +83,11 @@ public class PlayScreen extends BomberScreen {
 		renderer.render();
 		
 		b2dr.render(world, gameCam.combined);
+		
+		game.batch.setProjectionMatrix(gameCam.combined);
+		game.batch.begin();
+		player.draw(game.batch);
+		game.batch.end();
 	}
 
 	@Override
