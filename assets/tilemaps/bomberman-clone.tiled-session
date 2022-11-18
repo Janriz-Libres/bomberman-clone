@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "level1.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -13,11 +13,11 @@
             "scaleInEditor": 1
         },
         "level1.tmx": {
-            "scale": 3,
+            "scale": 2,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 58.33333333333334,
-                "y": 127
+                "x": 143,
+                "y": 101
             }
         }
     },
@@ -28,11 +28,12 @@
     "map.tileWidth": 16,
     "map.width": 15,
     "openFiles": [
+        "level1.tmx"
     ],
     "project": "bomberman-clone.tiled-project",
     "recentFiles": [
-        "bomb_party_v5.tsx",
-        "level1.tmx"
+        "level1.tmx",
+        "bomb_party_v5.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
