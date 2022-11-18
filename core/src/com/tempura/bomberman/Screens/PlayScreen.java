@@ -1,11 +1,8 @@
 package com.tempura.bomberman.Screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -38,7 +35,7 @@ public class PlayScreen extends BomberScreen {
 	private Player player;
 	
 	public PlayScreen (BomberGame game) {
-		atlas = new TextureAtlas("bomber_party.atlas");
+		atlas = new TextureAtlas("sprites/bomber_party.atlas");
 		this.game = game;
 		
 		gameCam = new OrthographicCamera();

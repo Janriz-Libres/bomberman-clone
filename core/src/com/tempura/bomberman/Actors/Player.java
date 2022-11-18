@@ -27,7 +27,12 @@ public class Player extends Sprite {
 	
 	public Body b2body;
 	
-	private TextureRegion playerIdle;
+	// Idle frames
+	private TextureRegion playerIdleUp;
+	private TextureRegion playerIdleRight;
+	private TextureRegion playerIdleDown;
+	
+	// Moving frames
 	private Animation<TextureRegion> playerRight;
 	private Animation<TextureRegion> playerUp;
 	private Animation<TextureRegion> playerDown;
@@ -38,46 +43,66 @@ public class Player extends Sprite {
 	public Player (World world, PlayScreen screen) {
 		super(screen.getAtlas().findRegion("human"));
 		this.world = world;
-		velocity = new Vector2();
+		velocity = new Vector2(0, 0);
 		
 		currentState = State.IDLE;
 		previousState = State.IDLE;
 		stateTimer = 0;
 		isMovingRight = true;
 		
+		playerIdleUp = new TextureRegion(getTexture(), 2, 2, 16, 16);
+		playerIdleRight = new TextureRegion(getTexture(), 2 + 4 * 16, 2, 16, 16);
+		playerIdleDown = new TextureRegion(getTexture(), 2 + 16, 2, 16, 16);
+		
 		Array<TextureRegion> frames = new Array<>();
 		
 		// Moving Right
-		for (int i = 4; i < 8; i++) {
+		for (int i = 5; i < 8; i++) {
 			frames.add(new TextureRegion(getTexture(), 2 + i * 16, 2, 16, 16));
 		}
+		frames.add(new TextureRegion(getTexture(), 2 + 6 * 16, 2, 16, 16));
 		playerRight = new Animation<>(0.1f, frames);
 		frames.clear();
 		
 		// Moving Up
-		frames.add(new TextureRegion(getTexture(), 2, 2, 16, 16));
 		frames.add(new TextureRegion(getTexture(), 2 + 8 * 16, 2, 16, 16));
+		frames.add(playerIdleUp);
 		frames.add(new TextureRegion(getTexture(), 2 + 9 * 16, 2, 16, 16));
+		frames.add(playerIdleUp);
 		playerUp = new Animation<>(0.1f, frames);
 		frames.clear();
 		
 		// Moving Down
-		for (int i = 1; i < 4; i++) {
-			frames.add(new TextureRegion(getTexture(), 2 + i * 16, 2, 16, 16));
-		}
+		frames.add(new TextureRegion(getTexture(), 2 + 2 * 16, 2, 16, 16));
+		frames.add(new TextureRegion(getTexture(), 2 + 1 * 16, 2, 16, 16));
+		frames.add(new TextureRegion(getTexture(), 2 + 3 * 16, 2, 16, 16));
+		frames.add(new TextureRegion(getTexture(), 2 + 1 * 16, 2, 16, 16));
 		playerDown = new Animation<>(0.1f, frames);
 		frames.clear();
 		
 		defineBody();
 		
-		playerIdle = new TextureRegion(getTexture(), 2, 2, 16, 16);
 		setBounds(0, 0, 18 / BomberGame.PPM, 18 / BomberGame.PPM);
-		setRegion(playerIdle);
+		setRegion(playerIdleDown);
+	}
+	
+	private boolean hasInput() {
+		if (Gdx.input.isKeyPressed(Keys.A)) return true;
+		if (Gdx.input.isKeyPressed(Keys.D)) return true;
+		if (Gdx.input.isKeyPressed(Keys.W)) return true;
+		if (Gdx.input.isKeyPressed(Keys.S)) return true;
+		return false;
 	}
 	
 	public void handleInput() {
-		velocity.set(0, 0);
-	
+		if (!hasInput()) {
+			currentState = State.IDLE;
+			b2body.setLinearVelocity(new Vector2(0, 0));
+			return;
+		}
+		
+		velocity = new Vector2(0, 0);
+		
 		if (Gdx.input.isKeyPressed(Keys.A)) {
 			velocity.x -= 1; // (-1, 0)
 			currentState = State.RIGHT;
@@ -94,9 +119,7 @@ public class Player extends Sprite {
 			velocity.y -= 1; // (0, -1)
 			currentState = State.DOWN;
 		}
-		
-		if (velocity.isZero()) currentState = State.IDLE;
-		
+
 		velocity = velocity.nor();
 		b2body.setLinearVelocity(velocity.setLength(0.5f));
 	}
@@ -105,6 +128,22 @@ public class Player extends Sprite {
 		setPosition(b2body.getPosition().x - getWidth() / 2,
 				b2body.getPosition().y - getHeight() / 2);
 		setRegion(getFrame());
+	}
+	
+	private TextureRegion getIdleDirection() {
+		if (velocity.y > 0) return playerIdleUp;
+		if (velocity.y < 0) return playerIdleDown;
+
+		if (velocity.x < 0) {
+			playerIdleRight.flip(!playerIdleRight.isFlipX(), false);
+			return playerIdleRight;
+		}
+		if (velocity.x > 0) {
+			playerIdleRight.flip(playerIdleRight.isFlipX(), false);
+			return playerIdleRight;
+		}
+		
+		return playerIdleDown;
 	}
 	
 	public TextureRegion getFrame() {
@@ -121,7 +160,7 @@ public class Player extends Sprite {
 			region = playerDown.getKeyFrame(stateTimer, true);
 			break;
 		default:
-			region = playerIdle;
+			region = getIdleDirection();
 		}
 		
 		if ((b2body.getLinearVelocity().x < 0 || !isMovingRight) && !region.isFlipX()) {
