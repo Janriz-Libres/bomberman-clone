@@ -1,7 +1,6 @@
 package com.tempura.bomberman;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tempura.bomberman.Screens.PlayScreen;
 
