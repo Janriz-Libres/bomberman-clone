@@ -50,7 +50,7 @@ public class PlayScreen extends BomberScreen {
 		player = new Player(world, this);
 		
 		maploader = new TmxMapLoader();
-		map = maploader.load("Tilemaps/level1.tmx");
+		map = maploader.load("tilemaps/level1.tmx");
 		renderer = new OrthogonalTiledMapRenderer(map, 1 / BomberGame.PPM);
 		
 		new HeavyBlocks(world, map);
