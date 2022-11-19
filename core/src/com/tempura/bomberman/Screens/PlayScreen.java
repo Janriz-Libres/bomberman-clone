@@ -33,6 +33,7 @@ public class PlayScreen extends BomberScreen {
 	private Box2DDebugRenderer b2dr;
 	
 	private Player player;
+	private Player enemy;
 	
 	public PlayScreen (BomberGame game) {
 		atlas = new TextureAtlas("sprites/bomber_party.atlas");
@@ -48,6 +49,7 @@ public class PlayScreen extends BomberScreen {
 		b2dr = new Box2DDebugRenderer();
 		
 		player = new Player(world, this);
+		enemy = new Player(world, this);
 		
 		maploader = new TmxMapLoader();
 		map = maploader.load("tilemaps/level1.tmx");
@@ -62,10 +64,12 @@ public class PlayScreen extends BomberScreen {
 	
 	private void update() {
 		player.handleInput();
+		enemy.handleInput();
 		
 		world.step(1/60f, 6, 2);
 		
 		player.update();
+		enemy.update();
 		
 		gameCam.update();
 		renderer.setView(gameCam);
@@ -84,6 +88,7 @@ public class PlayScreen extends BomberScreen {
 		game.batch.setProjectionMatrix(gameCam.combined);
 		game.batch.begin();
 		player.draw(game.batch);
+		enemy.draw(game.batch);
 		game.batch.end();
 	}
 
