@@ -14,13 +14,14 @@
         },
         "level1.tmx": {
             "scale": 2,
-            "selectedLayer": 1,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 143,
-                "y": 101
+                "x": 113.5,
+                "y": 28
             }
         }
     },
+    "frame.defaultDuration": 300,
     "last.imagePath": "C:/Users/leonm/OneDrive/Pictures",
     "map.height": 13,
     "map.lastUsedFormat": "tmx",
@@ -28,12 +29,13 @@
     "map.tileWidth": 16,
     "map.width": 15,
     "openFiles": [
-        "level1.tmx"
+        "level1.tmx",
+        "bomb_party_v5.tsx"
     ],
     "project": "bomberman-clone.tiled-project",
     "recentFiles": [
-        "level1.tmx",
-        "bomb_party_v5.tsx"
+        "bomb_party_v5.tsx",
+        "level1.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {

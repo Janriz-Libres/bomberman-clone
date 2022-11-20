@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.tempura.bomberman.BomberGame;
+import com.tempura.bomberman.Objects.Bomb;
 import com.tempura.bomberman.Screens.PlayScreen;
 
 public class Player extends Sprite {
@@ -23,9 +25,11 @@ public class Player extends Sprite {
 	public State currentState;
 	
 	private World world;
-	private Vector2 velocity;
+	private PlayScreen screen;
 	
 	public Body b2body;
+	private FixtureDef fdef;
+	private Vector2 velocity;
 	
 	// Idle frames
 	private TextureRegion playerIdleUp;
@@ -36,13 +40,21 @@ public class Player extends Sprite {
 	private Animation<TextureRegion> playerRight;
 	private Animation<TextureRegion> playerUp;
 	private Animation<TextureRegion> playerDown;
-	
+
 	private float stateTimer;
 	private boolean isMovingRight;
 	
-	public Player (World world, PlayScreen screen) {
+	private int maxBombs;
+	private int currentBombs;
+	
+	public Player (World world, TiledMap map, PlayScreen screen) {
 		super(screen.getAtlas().findRegion("human"));
+		
 		this.world = world;
+		this.screen = screen;
+		this.maxBombs = 1;
+		this.currentBombs = 0;
+		
 		velocity = new Vector2(0, 0);
 		
 		currentState = State.IDLE;
@@ -54,6 +66,14 @@ public class Player extends Sprite {
 		playerIdleRight = new TextureRegion(getTexture(), 2 + 4 * 16, 2, 16, 16);
 		playerIdleDown = new TextureRegion(getTexture(), 2 + 16, 2, 16, 16);
 		
+		defineAnimations();
+		defineBody();
+		
+		setBounds(0, 0, 16 / BomberGame.PPM, 16 / BomberGame.PPM);
+		setRegion(playerIdleDown);
+	}
+	
+	private void defineAnimations() {
 		Array<TextureRegion> frames = new Array<>();
 		
 		// Moving Right
@@ -79,14 +99,13 @@ public class Player extends Sprite {
 		frames.add(new TextureRegion(getTexture(), 2 + 1 * 16, 2, 16, 16));
 		playerDown = new Animation<>(0.1f, frames);
 		frames.clear();
-		
-		defineBody();
-		
-		setBounds(0, 0, 18 / BomberGame.PPM, 18 / BomberGame.PPM);
-		setRegion(playerIdleDown);
 	}
 	
-	private boolean hasInput() {
+	public void subtractBombCount() {
+		currentBombs -= 1;
+	}
+	
+	private boolean hasMovementInput() {
 		if (Gdx.input.isKeyPressed(Keys.A)) return true;
 		if (Gdx.input.isKeyPressed(Keys.D)) return true;
 		if (Gdx.input.isKeyPressed(Keys.W)) return true;
@@ -95,7 +114,22 @@ public class Player extends Sprite {
 	}
 	
 	public void handleInput() {
-		if (!hasInput()) {
+		// Drop bomb
+		if (Gdx.input.isKeyJustPressed(Keys.F) && currentBombs < maxBombs) {
+			int x = (int) (b2body.getPosition().x * BomberGame.PPM / 16);
+			int y = (int) (b2body.getPosition().y * BomberGame.PPM / 16);
+			float xSum = x + 0.5f;
+			float ySum = y + 0.5f;
+			float finalPosX = xSum * 16 / BomberGame.PPM;
+			float finalPosY = ySum * 16 / BomberGame.PPM;
+			
+			screen.getBombs().add(new Bomb(screen, finalPosX, finalPosY,
+					BomberGame.PLAYER_BOMB_BIT, Bomb.Team.PLAYER));
+			
+			currentBombs += 1;
+		}
+		
+		if (!hasMovementInput()) {
 			currentState = State.IDLE;
 			b2body.setLinearVelocity(new Vector2(0, 0));
 			return;
@@ -163,10 +197,10 @@ public class Player extends Sprite {
 			region = getIdleDirection();
 		}
 		
-		if ((b2body.getLinearVelocity().x < 0 || !isMovingRight) && !region.isFlipX()) {
+		if ((velocity.x < 0 || !isMovingRight) && !region.isFlipX()) {
 			region.flip(true, false);
 			isMovingRight = false;
-		} else if ((b2body.getLinearVelocity().x > 0 || isMovingRight) && region.isFlipX()) {
+		} else if ((velocity.x > 0 || isMovingRight) && region.isFlipX()) {
 			region.flip(true, false);
 			isMovingRight = true;
 		}
@@ -187,7 +221,11 @@ public class Player extends Sprite {
 		CircleShape shape = new CircleShape();
 		shape.setRadius(7 / BomberGame.PPM);
 		
-		FixtureDef fdef = new FixtureDef();
+		fdef = new FixtureDef();
+		fdef.filter.categoryBits = BomberGame.PLAYER_BIT;
+		fdef.filter.maskBits = BomberGame.DEFAULT_BIT | BomberGame.HEAVY_BLOCK_BIT |
+				BomberGame.LIGHT_BLOCK_BIT | BomberGame.ENEMY_BOMB_BIT |
+				BomberGame.OPAQUE_BOMB_BIT;
 		fdef.shape = shape;
 		
 		b2body.createFixture(fdef);
