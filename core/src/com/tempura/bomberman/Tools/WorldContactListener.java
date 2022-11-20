@@ -1,10 +1,8 @@
 package com.tempura.bomberman.Tools;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.tempura.bomberman.BomberGame;
-import com.tempura.bomberman.Actors.Player;
 import com.tempura.bomberman.Objects.Bomb;
 
 public class WorldContactListener extends GameContactListener {
