@@ -9,12 +9,15 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tempura.bomberman.BomberGame;
 import com.tempura.bomberman.Actors.Player;
+import com.tempura.bomberman.Objects.Bomb;
 import com.tempura.bomberman.Objects.HeavyBlocks;
+import com.tempura.bomberman.Tools.WorldContactListener;
 
 public class PlayScreen extends BomberScreen {
 	
@@ -33,6 +36,7 @@ public class PlayScreen extends BomberScreen {
 	private Box2DDebugRenderer b2dr;
 	
 	private Player player;
+	private Array<Bomb> bombs;
 	
 	public PlayScreen (BomberGame game) {
 		atlas = new TextureAtlas("sprites/bomber_party.atlas");
@@ -47,13 +51,28 @@ public class PlayScreen extends BomberScreen {
 		world = new World(new Vector2(0, 0), true);
 		b2dr = new Box2DDebugRenderer();
 		
-		player = new Player(world, this);
-		
 		maploader = new TmxMapLoader();
 		map = maploader.load("tilemaps/level1.tmx");
 		renderer = new OrthogonalTiledMapRenderer(map, 1 / BomberGame.PPM);
 		
+		player = new Player(world, map, this);
+		bombs = new Array<>();
+		
 		new HeavyBlocks(world, map);
+		
+		world.setContactListener(new WorldContactListener());
+	}
+	
+	public Player getPlayer() {
+		return player;
+	}
+	
+	public World getWorld() {
+		return world;
+	}
+	
+	public Array<Bomb> getBombs() {
+		return bombs;
 	}
 	
 	public TextureAtlas getAtlas() {
@@ -66,6 +85,7 @@ public class PlayScreen extends BomberScreen {
 		world.step(1/60f, 6, 2);
 		
 		player.update();
+		for (Bomb bomb : bombs) bomb.update();
 		
 		gameCam.update();
 		renderer.setView(gameCam);
@@ -83,6 +103,7 @@ public class PlayScreen extends BomberScreen {
 		
 		game.batch.setProjectionMatrix(gameCam.combined);
 		game.batch.begin();
+		for (Bomb bomb : bombs) bomb.draw(game.batch);
 		player.draw(game.batch);
 		game.batch.end();
 	}
