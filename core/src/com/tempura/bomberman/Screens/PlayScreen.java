@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tempura.bomberman.BomberGame;
+import com.tempura.bomberman.Actors.Enemy;
 import com.tempura.bomberman.Actors.Player;
 import com.tempura.bomberman.Objects.Bomb;
 import com.tempura.bomberman.Objects.HeavyBlocks;
@@ -36,7 +37,8 @@ public class PlayScreen extends BomberScreen {
 	private Box2DDebugRenderer b2dr;
 	
 	private Player player;
-	private Array<Bomb> bombs;
+  private Enemy enemy;
+  private Array<Bomb> bombs;
 	
 	public PlayScreen (BomberGame game) {
 		atlas = new TextureAtlas("sprites/bomber_party.atlas");
@@ -56,6 +58,7 @@ public class PlayScreen extends BomberScreen {
 		renderer = new OrthogonalTiledMapRenderer(map, 1 / BomberGame.PPM);
 		
 		player = new Player(world, map, this);
+    enemy = new Enemy(world, this);
 		bombs = new Array<>();
 		
 		new HeavyBlocks(world, map);
@@ -81,11 +84,13 @@ public class PlayScreen extends BomberScreen {
 	
 	private void update() {
 		player.handleInput();
+		enemy.handleInput();
 		
 		world.step(1/60f, 6, 2);
 		
 		player.update();
-		for (Bomb bomb : bombs) bomb.update();
+    enemy.update();
+    for (Bomb bomb : bombs) bomb.update();
 		
 		gameCam.update();
 		renderer.setView(gameCam);
@@ -105,6 +110,7 @@ public class PlayScreen extends BomberScreen {
 		game.batch.begin();
 		for (Bomb bomb : bombs) bomb.draw(game.batch);
 		player.draw(game.batch);
+		enemy.draw(game.batch);
 		game.batch.end();
 	}
 
