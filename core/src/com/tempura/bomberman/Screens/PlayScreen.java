@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tempura.bomberman.BomberGame;
+import com.tempura.bomberman.Actors.Enemy;
 import com.tempura.bomberman.Actors.Player;
 import com.tempura.bomberman.Objects.HeavyBlocks;
 
@@ -33,7 +34,7 @@ public class PlayScreen extends BomberScreen {
 	private Box2DDebugRenderer b2dr;
 	
 	private Player player;
-	private Player enemy;
+	private Enemy enemy;
 	
 	public PlayScreen (BomberGame game) {
 		atlas = new TextureAtlas("sprites/bomber_party.atlas");
@@ -49,7 +50,7 @@ public class PlayScreen extends BomberScreen {
 		b2dr = new Box2DDebugRenderer();
 		
 		player = new Player(world, this);
-		enemy = new Player(world, this);
+		enemy = new Enemy(world, this);
 		
 		maploader = new TmxMapLoader();
 		map = maploader.load("tilemaps/level1.tmx");
