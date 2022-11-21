@@ -41,7 +41,7 @@ public class Enemy extends Sprite {
 	private boolean isMovingRight2;
 	
 	public Enemy (World world, PlayScreen screen) {
-		super(screen.getAtlas().findRegion("human"));
+		super(screen.getAtlas().findRegion("purple_orc"));
 		this.world = world;
 		velocity = new Vector2(0,0);
 		
@@ -50,9 +50,9 @@ public class Enemy extends Sprite {
 		stateTimer2 = 0;
 		isMovingRight2 = true;
 		
-		enemyIdleUp = new TextureRegion(getTexture(), 2, 2, 16, 16);
-		enemyIdleRight = new TextureRegion(getTexture(), 2 + 4 * 16, 2, 16, 16);
-		enemyIdleDown = new TextureRegion(getTexture(), 2 + 16, 2, 16, 16);
+		enemyIdleUp = new TextureRegion(getTexture(), 164, 38, 16, 16);
+		enemyIdleRight = new TextureRegion(getTexture(), 164 + 4 * 16, 38, 16, 16);
+		enemyIdleDown = new TextureRegion(getTexture(), 164 + 16, 38, 16, 16);
 		
 		Array<TextureRegion> frames = new Array<>();
 		
