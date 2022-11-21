@@ -37,8 +37,8 @@ public class PlayScreen extends BomberScreen {
 	private Box2DDebugRenderer b2dr;
 	
 	private Player player;
-  private Enemy enemy;
-  private Array<Bomb> bombs;
+	private Enemy enemy;
+	private Array<Bomb> bombs;
 	
 	public PlayScreen (BomberGame game) {
 		atlas = new TextureAtlas("sprites/bomber_party.atlas");
@@ -58,7 +58,7 @@ public class PlayScreen extends BomberScreen {
 		renderer = new OrthogonalTiledMapRenderer(map, 1 / BomberGame.PPM);
 		
 		player = new Player(world, map, this);
-    enemy = new Enemy(world, this);
+		enemy = new Enemy(world, map, this);
 		bombs = new Array<>();
 		
 		new HeavyBlocks(world, map);
@@ -68,6 +68,10 @@ public class PlayScreen extends BomberScreen {
 	
 	public Player getPlayer() {
 		return player;
+	}
+	
+	public Enemy getEnemy() {
+		return enemy;
 	}
 	
 	public World getWorld() {
@@ -89,8 +93,8 @@ public class PlayScreen extends BomberScreen {
 		world.step(1/60f, 6, 2);
 		
 		player.update();
-    enemy.update();
-    for (Bomb bomb : bombs) bomb.update();
+		enemy.update();
+		for (Bomb bomb : bombs) bomb.update();
 		
 		gameCam.update();
 		renderer.setView(gameCam);

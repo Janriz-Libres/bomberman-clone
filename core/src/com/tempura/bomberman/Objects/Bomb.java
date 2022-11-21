@@ -63,6 +63,7 @@ public class Bomb extends Sprite {
 			world.destroyBody(b2body);
 			
 			if (team == Team.PLAYER) screen.getPlayer().subtractBombCount();
+			else screen.getEnemy().subtractBombCount();
 		}
 	}
 	
