@@ -87,10 +87,10 @@ public class Enemy extends Sprite {
 	}
 	
 	private boolean hasInput() {
-		if (Gdx.input.isKeyPressed(Keys.J)) return true;
-		if (Gdx.input.isKeyPressed(Keys.L)) return true;
-		if (Gdx.input.isKeyPressed(Keys.I)) return true;
-		if (Gdx.input.isKeyPressed(Keys.K)) return true;
+		if (Gdx.input.isKeyPressed(Keys.LEFT)) return true;
+		if (Gdx.input.isKeyPressed(Keys.RIGHT)) return true;
+		if (Gdx.input.isKeyPressed(Keys.UP)) return true;
+		if (Gdx.input.isKeyPressed(Keys.DOWN)) return true;
 		return false;
 	}
 	
@@ -103,19 +103,19 @@ public class Enemy extends Sprite {
 		
 		velocity = new Vector2(0, 0);
 		
-		if(Gdx.input.isKeyPressed(Keys.J)) {
+		if(Gdx.input.isKeyPressed(Keys.LEFT)) {
 			velocity.x -= 1; // (-1,0)
 			currentState2 = State.RIGHT;
 		}
-		if(Gdx.input.isKeyPressed(Keys.L)) {
+		if(Gdx.input.isKeyPressed(Keys.RIGHT)) {
 			velocity.x += 1; // (1,0)
 			currentState2 = State.RIGHT;
 		}
-		if(Gdx.input.isKeyPressed(Keys.I)) {
+		if(Gdx.input.isKeyPressed(Keys.UP)) {
 			velocity.y += 1; // (0,1)
 			currentState2 = State.UP;
 		}
-		if(Gdx.input.isKeyPressed(Keys.K)) {
+		if(Gdx.input.isKeyPressed(Keys.DOWN)) {
 			velocity.y -= 1; // (0,-1)
 			currentState2 = State.DOWN;
 		}
