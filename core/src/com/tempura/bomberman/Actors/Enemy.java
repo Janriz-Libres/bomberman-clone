@@ -58,25 +58,25 @@ public class Enemy extends Sprite {
 		
 		//right
 		for(int i = 5; i <8; i++) {
-			frames.add(new TextureRegion(getTexture(), 2 + i * 16, 2, 16, 16));
+			frames.add(new TextureRegion(getTexture(), 164 + i * 16, 38, 16, 16));
 		}
-		frames.add(new TextureRegion(getTexture(), 2 + 6 * 16, 2, 16, 16));
+		frames.add(new TextureRegion(getTexture(), 164 + 6 * 16, 38, 16, 16));
 		enemyRight = new Animation<>(0.1f, frames);
 		frames.clear();
 		
 		//up
-		frames.add(new TextureRegion(getTexture(), 2 + 8 * 16, 2, 16, 16));
+		frames.add(new TextureRegion(getTexture(), 164 + 8 * 16, 38, 16, 16));
 		frames.add(enemyIdleUp);
-		frames.add(new TextureRegion(getTexture(), 2 + 9 * 16, 2, 16, 16));
+		frames.add(new TextureRegion(getTexture(), 164 + 9 * 16, 38, 16, 16));
 		frames.add(enemyIdleUp);
 		enemyUp = new Animation<>(0.1f, frames);
 		frames.clear();
 		
 		//down
-		frames.add(new TextureRegion(getTexture(), 2 + 2 * 16, 2, 16, 16));
-		frames.add(new TextureRegion(getTexture(), 2 + 1 * 16, 2, 16, 16));
-		frames.add(new TextureRegion(getTexture(), 2 + 3 * 16, 2, 16, 16));
-		frames.add(new TextureRegion(getTexture(), 2 + 1 * 16, 2, 16, 16));
+		frames.add(new TextureRegion(getTexture(), 164 + 2 * 16, 38, 16, 16));
+		frames.add(new TextureRegion(getTexture(), 164 + 1 * 16, 38, 16, 16));
+		frames.add(new TextureRegion(getTexture(), 164 + 3 * 16, 38, 16, 16));
+		frames.add(new TextureRegion(getTexture(), 164 + 1 * 16, 38, 16, 16));
 		enemyDown = new Animation<>(0.1f, frames);
 		frames.clear();
 		
