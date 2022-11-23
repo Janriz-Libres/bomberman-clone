@@ -18,6 +18,7 @@ import com.tempura.bomberman.Actors.Enemy;
 import com.tempura.bomberman.Actors.Player;
 import com.tempura.bomberman.Objects.Bomb;
 import com.tempura.bomberman.Objects.HeavyBlocks;
+import com.tempura.bomberman.Scenes.Hud;
 import com.tempura.bomberman.Tools.WorldContactListener;
 
 public class PlayScreen extends BomberScreen {
@@ -27,6 +28,7 @@ public class PlayScreen extends BomberScreen {
 	
 	private OrthographicCamera gameCam;
 	private Viewport gamePort;
+	private Hud hud;
 	
 	//Tiled map variables
     private TmxMapLoader maploader;
@@ -47,7 +49,8 @@ public class PlayScreen extends BomberScreen {
 		gameCam = new OrthographicCamera();
 		gamePort = new FitViewport(BomberGame.V_WIDTH / BomberGame.PPM,
 			BomberGame.V_HEIGHT / BomberGame.PPM, gameCam);
-		
+		hud = new Hud(game.batch);
+	
 		gameCam.setToOrtho(false, gamePort.getWorldWidth(), gamePort.getWorldHeight());
 		
 		world = new World(new Vector2(0, 0), true);
@@ -116,6 +119,9 @@ public class PlayScreen extends BomberScreen {
 		player.draw(game.batch);
 		enemy.draw(game.batch);
 		game.batch.end();
+		
+		game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+		hud.stage.draw();
 	}
 
 	@Override
