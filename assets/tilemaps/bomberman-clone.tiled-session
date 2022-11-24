@@ -8,21 +8,25 @@
         "."
     ],
     "fileStates": {
+        "C:/Users/leonm/Downloads/explosion.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "bomb_party_v5.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "level1.tmx": {
             "scale": 2,
-            "selectedLayer": 2,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 113.5,
-                "y": 28
+                "x": 112,
+                "y": 152.5
             }
         }
     },
     "frame.defaultDuration": 300,
-    "last.imagePath": "C:/Users/leonm/OneDrive/Pictures",
+    "last.imagePath": "C:/Users/leonm/Downloads/sprites",
     "map.height": 13,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
@@ -35,11 +39,12 @@
     "project": "bomberman-clone.tiled-project",
     "recentFiles": [
         "bomb_party_v5.tsx",
-        "level1.tmx"
+        "level1.tmx",
+        "C:/Users/leonm/Downloads/explosion.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
-        "height": 16,
-        "width": 16
+        "height": 32,
+        "width": 32
     }
 }

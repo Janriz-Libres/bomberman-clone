@@ -12,8 +12,9 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import com.tempura.bomberman.BomberGame;
 import com.tempura.bomberman.Screens.PlayScreen;
+import com.tempura.bomberman.Tools.GameObject;
 
-public abstract class Character extends Sprite {
+public abstract class Character extends Sprite implements GameObject {
 	
 	public enum State { IDLE, RIGHT, UP, DOWN };
 	public State previousState;
@@ -58,7 +59,7 @@ public abstract class Character extends Sprite {
 		isMovingRight = true;
 		
 		defineAnimations();
-		defineBody();
+		defineBodies();
 		
 		setBounds(0, 0, 16 / BomberGame.PPM, 16 / BomberGame.PPM);
 		setRegion(playerIdleDown);
@@ -68,7 +69,7 @@ public abstract class Character extends Sprite {
 	protected abstract boolean hasMovementInput();
 	protected abstract void dropBomb();
 	protected abstract void handleMovement();
-	protected abstract void defineBody();
+	public abstract void defineBodies();
 	
 	public void subtractBombCount() {
 		currentBombs -= 1;

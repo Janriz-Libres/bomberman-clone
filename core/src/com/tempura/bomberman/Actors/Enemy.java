@@ -15,7 +15,7 @@ import com.tempura.bomberman.BomberGame;
 import com.tempura.bomberman.Objects.Bomb;
 import com.tempura.bomberman.Screens.PlayScreen;
 
-public class Enemy extends Character {
+public class Enemy extends Character  {
 	
 	public Enemy(World world, TiledMap map, PlayScreen screen) {
 		super(world, map, screen);
@@ -101,7 +101,7 @@ public class Enemy extends Character {
 	}
 
 	@Override
-	protected void defineBody() {
+	public void defineBodies() {
 		BodyDef bdef = new BodyDef();
 		bdef.type = BodyType.DynamicBody;
 		bdef.position.set(215 / BomberGame.PPM, 200 / BomberGame.PPM);

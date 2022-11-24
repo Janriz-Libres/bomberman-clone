@@ -2,6 +2,7 @@ package com.tempura.bomberman.Screens;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -17,12 +18,14 @@ import com.tempura.bomberman.BomberGame;
 import com.tempura.bomberman.Actors.Enemy;
 import com.tempura.bomberman.Actors.Player;
 import com.tempura.bomberman.Objects.Bomb;
-import com.tempura.bomberman.Objects.HeavyBlocks;
+import com.tempura.bomberman.Objects.Explosion;
+import com.tempura.bomberman.Objects.HeavyBlock;
+import com.tempura.bomberman.Objects.LightBlock;
 import com.tempura.bomberman.Tools.WorldContactListener;
 
 public class PlayScreen extends BomberScreen {
 	
-	private BomberGame game;
+	public BomberGame game;
 	private TextureAtlas atlas;
 	
 	private OrthographicCamera gameCam;
@@ -39,6 +42,7 @@ public class PlayScreen extends BomberScreen {
 	private Player player;
 	private Enemy enemy;
 	private Array<Bomb> bombs;
+	public Array<Explosion> explosions;
 	
 	public PlayScreen (BomberGame game) {
 		atlas = new TextureAtlas("sprites/bomber_party.atlas");
@@ -60,8 +64,10 @@ public class PlayScreen extends BomberScreen {
 		player = new Player(world, map, this);
 		enemy = new Enemy(world, map, this);
 		bombs = new Array<>();
+		explosions = new Array<>();
 		
-		new HeavyBlocks(world, map);
+		new HeavyBlock(this);
+		new LightBlock(this);
 		
 		world.setContactListener(new WorldContactListener());
 	}
@@ -86,7 +92,11 @@ public class PlayScreen extends BomberScreen {
 		return atlas;
 	}
 	
-	private void update() {
+	public TiledMap getMap() {
+		return map;
+	}
+	
+	private void update(float dt) {
 		player.handleInput();
 		enemy.handleInput();
 		
@@ -95,6 +105,7 @@ public class PlayScreen extends BomberScreen {
 		player.update();
 		enemy.update();
 		for (Bomb bomb : bombs) bomb.update();
+		for (Explosion explosion : explosions) explosion.update(dt);
 		
 		gameCam.update();
 		renderer.setView(gameCam);
@@ -102,7 +113,7 @@ public class PlayScreen extends BomberScreen {
 
 	@Override
 	public void render(float delta) {
-		update();
+		update(delta);
 		
 		ScreenUtils.clear(Color.BLACK);
 		
@@ -112,9 +123,12 @@ public class PlayScreen extends BomberScreen {
 		
 		game.batch.setProjectionMatrix(gameCam.combined);
 		game.batch.begin();
+		
 		for (Bomb bomb : bombs) bomb.draw(game.batch);
 		player.draw(game.batch);
 		enemy.draw(game.batch);
+		for (Explosion explosion : explosions) explosion.draw(game.batch);
+		
 		game.batch.end();
 	}
 

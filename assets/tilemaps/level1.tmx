@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="15" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="38">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="15" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="49">
  <tileset firstgid="1" source="bomb_party_v5.tsx"/>
  <layer id="3" name="background" width="15" height="13">
   <data encoding="csv">
@@ -22,15 +22,15 @@
   <data encoding="csv">
 86,71,71,71,71,71,71,71,71,71,71,71,71,71,86,
 86,8,8,8,8,8,8,8,8,8,8,8,8,8,86,
-86,8,71,8,71,8,71,8,71,8,71,8,71,8,86,
-86,8,8,8,8,8,8,8,8,8,8,8,8,8,86,
-86,8,71,8,71,8,71,8,71,8,71,8,71,8,86,
-86,8,8,8,8,8,8,8,8,8,8,8,8,8,86,
-86,8,71,8,71,8,71,8,71,8,71,8,71,8,86,
-86,8,8,8,8,8,8,8,8,8,8,8,8,8,86,
-86,8,71,8,71,8,71,8,71,8,71,8,71,8,86,
-86,8,8,8,8,8,8,8,8,8,8,8,8,8,86,
-86,8,71,8,71,8,71,8,71,8,71,8,71,8,86,
+86,2,71,8,71,8,71,2,71,8,71,8,71,2,86,
+86,8,8,8,2,8,8,2,2,2,2,8,8,2,86,
+86,2,71,8,71,8,71,10,71,8,71,8,71,2,86,
+86,8,8,8,10,8,8,8,8,2,10,2,8,2,86,
+86,2,71,8,71,8,71,10,71,8,71,2,71,2,86,
+86,8,8,8,10,8,8,8,8,8,10,8,8,2,86,
+86,2,71,8,71,8,71,10,71,8,71,8,71,2,86,
+86,2,8,8,2,2,2,2,8,8,2,8,8,2,86,
+86,2,71,8,71,8,71,2,71,8,71,8,71,2,86,
 86,8,8,8,8,8,8,8,8,8,8,8,8,8,86,
 71,71,71,71,71,71,71,71,71,71,71,71,71,71,71
 </data>
@@ -70,5 +70,14 @@
   <object id="35" x="16" y="0" width="208" height="16"/>
   <object id="36" x="224" y="0" width="16" height="192"/>
   <object id="37" x="0" y="192" width="240" height="16"/>
+ </objectgroup>
+ <objectgroup id="4" name="light_blocks">
+  <object id="41" x="112" y="64" width="16" height="16"/>
+  <object id="42" x="64" y="80" width="16" height="16"/>
+  <object id="44" x="64" y="112" width="16" height="16"/>
+  <object id="45" x="112" y="96" width="16" height="16"/>
+  <object id="46" x="160" y="80" width="16" height="16"/>
+  <object id="47" x="160" y="112" width="16" height="16"/>
+  <object id="48" x="112" y="128" width="16" height="16"/>
  </objectgroup>
 </map>

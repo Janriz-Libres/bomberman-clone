@@ -102,7 +102,7 @@ public class Player extends Character {
 	}
  	
 	@Override
-	protected void defineBody() {
+	public void defineBodies() {
 		BodyDef bdef = new BodyDef();
 		bdef.type = BodyType.DynamicBody;
 		bdef.position.set(24 / BomberGame.PPM, 24 / BomberGame.PPM);

@@ -54,16 +54,18 @@ public class Bomb extends Sprite {
 	public void update() {
 		setPosition(b2body.getPosition().x - getWidth() / 2,
 				b2body.getPosition().y - getHeight() / 2);
-		setRegion(anim.getKeyFrame(stateTimer, true));
-		
+		setRegion(anim.getKeyFrame(stateTimer));
+		 
 		this.stateTimer += Gdx.graphics.getDeltaTime();
 		
 		if (stateTimer >= 3) {
 			screen.getBombs().removeValue(this, true);
-			world.destroyBody(b2body);
 			
 			if (team == Team.PLAYER) screen.getPlayer().subtractBombCount();
 			else screen.getEnemy().subtractBombCount();
+			
+			screen.explosions.add(new Explosion(screen, b2body.getPosition()));
+			world.destroyBody(b2body);
 		}
 	}
 	
