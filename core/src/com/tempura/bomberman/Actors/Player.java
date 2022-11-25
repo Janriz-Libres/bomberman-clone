@@ -102,7 +102,7 @@ public class Player extends Character {
 	}
  	
 	@Override
-	protected void defineBody() {
+	public void defineBodies() {
 		BodyDef bdef = new BodyDef();
 		bdef.type = BodyType.DynamicBody;
 		bdef.position.set(24 / BomberGame.PPM, 24 / BomberGame.PPM);
@@ -116,7 +116,7 @@ public class Player extends Character {
 		fdef.filter.categoryBits = BomberGame.PLAYER_BIT;
 		fdef.filter.maskBits = BomberGame.DEFAULT_BIT | BomberGame.HEAVY_BLOCK_BIT |
 				BomberGame.LIGHT_BLOCK_BIT | BomberGame.ENEMY_BOMB_BIT |
-				BomberGame.OPAQUE_BOMB_BIT;
+				BomberGame.OPAQUE_BOMB_BIT | BomberGame.EXPLOSION_BIT;
 		fdef.shape = shape;
 		
 		b2body.createFixture(fdef);
