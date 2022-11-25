@@ -126,6 +126,7 @@ public class PlayScreen extends BomberScreen {
 		for (Bomb bomb : bombs) bomb.update();
 		for (Explosion explosion : explosions) explosion.update();
 		
+		hud.update(dt);
 		gameCam.update();
 		renderer.setView(gameCam);
 	}
