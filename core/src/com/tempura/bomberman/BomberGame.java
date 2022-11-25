@@ -11,7 +11,7 @@ public class BomberGame extends Game {
 	
 	public static final short DEFAULT_BIT = 1, PLAYER_BIT = 2, HEAVY_BLOCK_BIT  = 4,
 			LIGHT_BLOCK_BIT = 8, DESTROYED_BLOCK_BIT = 16, PLAYER_BOMB_BIT = 32,
-			ENEMY_BOMB_BIT = 64, OPAQUE_BOMB_BIT = 128;
+			ENEMY_BOMB_BIT = 64, OPAQUE_BOMB_BIT = 128, EXPLOSION_BIT = 256;
 	
 	public SpriteBatch batch;
 	

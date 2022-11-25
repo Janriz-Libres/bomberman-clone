@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.tempura.bomberman.BomberGame;
 import com.tempura.bomberman.Screens.PlayScreen;
 import com.tempura.bomberman.Tools.GameObject;
@@ -48,6 +48,7 @@ public class Block extends Sprite implements GameObject {
 			shape.setAsBox(rect.getWidth() / 2 / BomberGame.PPM, rect.getHeight() / 2 / BomberGame.PPM);
 			fdef.shape = shape;
 			fdef.filter.categoryBits = category;
+			fdef.filter.maskBits = BomberGame.DEFAULT_BIT | BomberGame.PLAYER_BIT | BomberGame.EXPLOSION_BIT;
 			body.createFixture(fdef);
 		}
 	}
