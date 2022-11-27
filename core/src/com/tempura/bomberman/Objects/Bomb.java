@@ -30,14 +30,16 @@ public class Bomb extends Sprite {
 	private Fixture fixture;
 	
 	private float stateTimer;
+	private int range;
 	
-	public Bomb(PlayScreen screen, float initX, float initY, short categoryBit, Team team) {
+	public Bomb(PlayScreen screen, float initX, float initY, short categoryBit, Team team, int range) {
 		super(screen.getAtlas().findRegion("big_bomb"));
 		
 		this.team = team;
 		this.world = screen.getWorld();
 		this.screen = screen;
 		this.stateTimer = 0;
+		this.range = range;
 		
 		Array<TextureRegion> frames = new Array<>();
 		for (int i = 0; i <= 5; i++) {
@@ -65,7 +67,7 @@ public class Bomb extends Sprite {
 			if (team == Team.PLAYER) screen.getPlayer().subtractBombCount();
 			else screen.getEnemy().subtractBombCount();
 			
-			screen.explosions.add(new Explosion(screen, b2body.getPosition()));
+			screen.explosions.add(new Explosion(screen, b2body.getPosition(), range));
 			world.destroyBody(b2body);
 		}
 	}

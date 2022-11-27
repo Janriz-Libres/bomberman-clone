@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-
+import com.badlogic.gdx.utils.Array;
 import com.tempura.bomberman.BomberGame;
 import com.tempura.bomberman.Screens.PlayScreen;
 import com.tempura.bomberman.Tools.GameObject;
@@ -38,10 +38,15 @@ public abstract class Character extends Sprite implements GameObject {
 	protected Animation<TextureRegion> playerDown;
 
 	protected float stateTimer;
+	private float deadTimer;
 	protected boolean isMovingRight;
+	public boolean isDead;
 	
 	protected int maxBombs;
 	protected int currentBombs;
+	
+	private float speed;
+	protected int range;
 	
 	public Character(World world, TiledMap map, PlayScreen screen) {
 		super(screen.getAtlas().findRegion("human"));
@@ -52,17 +57,43 @@ public abstract class Character extends Sprite implements GameObject {
 		this.currentBombs = 0;
 		
 		velocity = new Vector2(0, 0);
+		speed = 0.5f;
+		range = 1;
 		
 		currentState = State.IDLE;
 		previousState = State.IDLE;
+		deadTimer = 0;
 		stateTimer = 0;
 		isMovingRight = true;
+		isDead = false;
 		
 		defineAnimations();
 		defineBodies();
 		
 		setBounds(0, 0, 16 / BomberGame.PPM, 16 / BomberGame.PPM);
 		setRegion(playerIdleDown);
+	}
+	
+	public void addRange() {
+		this.range++;
+	}
+	
+	public void addCapacity() {
+		this.maxBombs++;
+	}
+	
+	public void boostSpeed() {
+		this.speed = 1;
+	}
+	
+	public void setToDie() {
+		isDead = true;
+	}
+	
+	public void maximizeStats() {
+		range = 20;
+		speed = 1;
+		maxBombs = 100;
 	}
 	
 	protected abstract void defineAnimations();
@@ -79,7 +110,7 @@ public abstract class Character extends Sprite implements GameObject {
 		// Drop bomb
 		dropBomb();
 		
-		if (!hasMovementInput()) {
+		if (!hasMovementInput() || isDead) {
 			currentState = State.IDLE;
 			b2body.setLinearVelocity(new Vector2(0, 0));
 			return;
@@ -90,13 +121,16 @@ public abstract class Character extends Sprite implements GameObject {
 		handleMovement();
 
 		velocity = velocity.nor();
-		b2body.setLinearVelocity(velocity.setLength(0.5f));
+		b2body.setLinearVelocity(velocity.setLength(speed));
 	}
 	
 	public void update() {
 		setPosition(b2body.getPosition().x - getWidth() / 2,
 				b2body.getPosition().y - getHeight() / 2);
 		setRegion(getFrame());
+		
+		if (isDead) deadTimer += Gdx.graphics.getDeltaTime();
+		if (deadTimer >= 2) screen.destroyPlayer(b2body);
 	}
 	
 	private TextureRegion getIdleDirection() {

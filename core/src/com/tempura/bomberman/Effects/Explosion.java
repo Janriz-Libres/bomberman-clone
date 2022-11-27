@@ -35,7 +35,7 @@ public class Explosion implements GameObject {
 	private static final int heavyTileId1 = 71;
 	private static final int heavyTileId2 = 86;
 	
-	public Explosion(PlayScreen screen, Vector2 origin) {
+	public Explosion(PlayScreen screen, Vector2 origin, int range) {
 		this.screen = screen;
 		this.origin = origin;
 		this.world = screen.getWorld();
@@ -44,7 +44,7 @@ public class Explosion implements GameObject {
 		map = screen.getMap();
 		tiles = new Array<>();
 		
-		range = 3;
+		this.range = range;
 		stateTimer = 0;
 		
 		defineBodies();

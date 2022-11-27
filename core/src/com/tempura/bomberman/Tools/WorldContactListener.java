@@ -1,10 +1,9 @@
 package com.tempura.bomberman.Tools;
 
 import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.World;
 import com.tempura.bomberman.BomberGame;
+import com.tempura.bomberman.Actors.Character;
 import com.tempura.bomberman.Objects.Bomb;
 import com.tempura.bomberman.Objects.LightBlock;
 import com.tempura.bomberman.Screens.PlayScreen;
@@ -27,7 +26,16 @@ public class WorldContactListener extends GameContactListener {
 		if (filterData == (BomberGame.EXPLOSION_BIT | BomberGame.LIGHT_BLOCK_BIT)) {
 			Fixture lightBlock = fixA.getFilterData().categoryBits == BomberGame.LIGHT_BLOCK_BIT ?
 					fixA : fixB;
+			LightBlock block = (LightBlock) lightBlock.getUserData();
+			block.spawnPowerup(lightBlock.getBody().getPosition().x, lightBlock.getBody().getPosition().y);
 			screen.getDestroyables().add(lightBlock.getBody());
+			return;
+		}
+		
+		if (filterData == (BomberGame.EXPLOSION_BIT | BomberGame.PLAYER_BIT)) {
+			Fixture player = fixA.getFilterData().categoryBits == BomberGame.PLAYER_BIT ? fixA : fixB;
+			Character charPlay = (Character) player.getUserData();
+			charPlay.setToDie();
 		}
 	}
 

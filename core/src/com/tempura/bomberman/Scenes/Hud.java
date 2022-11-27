@@ -5,16 +5,16 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.*;
 import com.tempura.bomberman.BomberGame;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-
 
 public class Hud{
 	public Stage stage;
 	private Viewport viewport;
 	
-	private Integer worldTimer;
+	private float worldTimer;
 	private Integer player1Score;
 	private Integer player2Score;
 	
@@ -25,7 +25,7 @@ public class Hud{
 	Label ScoreLabel1;
 	Label ScoreLabel2;
 	
-	 	public Hud(SpriteBatch batch) {
+	public Hud(SpriteBatch batch) {
 		worldTimer = 300;
 		player1Score = 0;
 		player2Score = 0;
@@ -42,7 +42,7 @@ public class Hud{
 		player1 = new Label("Player 1", font);
 		player2 = new Label("Player 2", font);
 		timeLabel = new Label("Time", font);
-		countdownLabel = new Label(String.format("%03d", worldTimer), font);
+		countdownLabel = new Label(String.format("%03d", (int) worldTimer), font);
 		ScoreLabel1 = new Label(String.format("%01d", player1Score), font);
 		ScoreLabel2 = new Label(String.format("%01d", player2Score), font);
 		
@@ -56,6 +56,29 @@ public class Hud{
 		table.add(ScoreLabel2).expandX().pad(1);
 		table.add(countdownLabel).expandX().pad(1);
 		
-		stage.addActor(table);	
+		stage.addActor(table);
+	}
+	
+	public void setScore1(int score) {
+		player1Score += score;
+		ScoreLabel1.setText(player1Score);
+	}
+	
+	public void setScore2(int score) {
+		player2Score += score;
+		ScoreLabel2.setText(player2Score);
+	}
+
+	public void setTimer() {
+		worldTimer -= Gdx.graphics.getDeltaTime();
+		countdownLabel.setText((int) worldTimer);
+	}
+	
+	public void resetTimer() {
+		worldTimer = 300;
+	}
+	
+	public float getTimer() {
+		return worldTimer;
 	}
 }

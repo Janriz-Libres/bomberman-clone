@@ -66,7 +66,7 @@ public class Player extends Character {
 	
 	@Override
 	protected void dropBomb() {
-		if (Gdx.input.isKeyJustPressed(Keys.F) && currentBombs < maxBombs) {
+		if (Gdx.input.isKeyJustPressed(Keys.F) && currentBombs < maxBombs && !isDead) {
 			int x = (int) (b2body.getPosition().x * BomberGame.PPM / 16);
 			int y = (int) (b2body.getPosition().y * BomberGame.PPM / 16);
 			float xSum = x + 0.5f;
@@ -75,7 +75,7 @@ public class Player extends Character {
 			float finalPosY = ySum * 16 / BomberGame.PPM;
 			
 			screen.getBombs().add(new Bomb(screen, finalPosX, finalPosY,
-					BomberGame.PLAYER_BOMB_BIT, Bomb.Team.PLAYER));
+					BomberGame.PLAYER_BOMB_BIT, Bomb.Team.PLAYER, range));
 			
 			currentBombs += 1;
 		}
@@ -119,6 +119,6 @@ public class Player extends Character {
 				BomberGame.OPAQUE_BOMB_BIT | BomberGame.EXPLOSION_BIT;
 		fdef.shape = shape;
 		
-		b2body.createFixture(fdef);
+		b2body.createFixture(fdef).setUserData(this);
 	}
 }
