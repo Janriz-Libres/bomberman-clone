@@ -56,8 +56,9 @@ public class menuTemp implements Screen {
 		if(Gdx.input.getX() < x + PLAY_BUTTON_WIDTH && Gdx.input.getX() > x && HEIGHT - Gdx.input.getY() < PLAY_BUTTON_Y + PLAY_BUTTON_HEIGHT && HEIGHT - Gdx.input.getY() > PLAY_BUTTON_Y ){
 			game.batch.draw(playButtonActive, x, PLAY_BUTTON_Y, PLAY_BUTTON_WIDTH,PLAY_BUTTON_HEIGHT );
 			if(Gdx.input.isTouched()) {
-				this.dispose();
-				game.setScreen(new PlayScreen(game));
+				this.dispose(); 
+				game.playScreen.music.play();
+				game.setScreen(game.playScreen);
 			}
 		}else {
 			game.batch.draw(playButtonInactive, x, PLAY_BUTTON_Y, PLAY_BUTTON_WIDTH,PLAY_BUTTON_HEIGHT );

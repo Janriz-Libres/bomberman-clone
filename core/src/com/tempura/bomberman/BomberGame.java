@@ -1,7 +1,10 @@
 package com.tempura.bomberman;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.tempura.bomberman.Scenes.Hud;
 import com.tempura.bomberman.Screens.PlayScreen;
 import com.tempura.bomberman.Screens.menuTemp;
@@ -18,15 +21,22 @@ public class BomberGame extends Game {
 	public SpriteBatch batch;
 	public Hud hud;
 	
-	private PlayScreen playScreen;
+	public PlayScreen playScreen;
+	private menuTemp menu;
+	private TextureAtlas atlas;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		
+		atlas = new TextureAtlas("sprites/bomber_party.atlas");
 
-		menuTemp menu = new menuTemp(this);
+		menu = new menuTemp(this);
 		this.setScreen(menu);
-		hud = new Hud(batch);
+		
+		Sprite player = new Sprite(atlas.findRegion("human"));
+		hud = new Hud(batch, 0, 0, new TextureRegion(player.getTexture(), 2 + 16, 2, 16, 16),
+				new TextureRegion(player.getTexture(), 164 + 16, 38, 16, 16));
 		
 		playScreen = new PlayScreen(this);
 	}
@@ -39,6 +49,8 @@ public class BomberGame extends Game {
 	@Override
 	public void dispose () {
 		batch.dispose();
+		menu.dispose();
 		playScreen.dispose();
+		hud.dispose();
 	}
 }

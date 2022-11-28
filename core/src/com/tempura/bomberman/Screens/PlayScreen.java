@@ -55,7 +55,7 @@ public class PlayScreen extends BomberScreen {
 	public Array<Powerup> powerups;
 	private Array<Body> destroyableBodies;
 	
-	private Music music;
+	public Music music;
 	
 	public PlayScreen (BomberGame game) {
 		atlas = new TextureAtlas("sprites/bomber_party.atlas");
@@ -79,7 +79,6 @@ public class PlayScreen extends BomberScreen {
 		player = new Player(world, map, this);
 		enemy = new Enemy(world, map, this);
 		
-		hud = new Hud(game.batch, player.getScore(), enemy.getScore(), player.getIdleDownTexture(), enemy.getIdleDownTexture());
 		bombs = new Array<>();
 		explosions = new Array<>();
 		
@@ -90,7 +89,6 @@ public class PlayScreen extends BomberScreen {
 		music = Gdx.audio.newMusic(Gdx.files.internal("music/BusyDay.wav"));
 		music.setLooping(true);
 		music.setVolume(0.6f);
-		music.play();
 		
 		new HeavyBlock(this);
 		new LightBlock(this);
@@ -178,6 +176,7 @@ public class PlayScreen extends BomberScreen {
 		if (player == null || enemy == null || hud.getTimer() <= 0) {
 			hud.resetTimer();
 			music.stop();
+			music.play();
 			
 			PlayScreen anotherScreen = new PlayScreen(game);
 			game.setScreen(anotherScreen);
