@@ -72,7 +72,7 @@ public class ExplosionTile extends Sprite {
 		
 		FixtureDef fdef = new FixtureDef();
 		fdef.filter.categoryBits = BomberGame.EXPLOSION_BIT;
-		fdef.filter.maskBits = BomberGame.DEFAULT_BIT | BomberGame.LIGHT_BLOCK_BIT;
+		fdef.filter.maskBits = BomberGame.DEFAULT_BIT | BomberGame.LIGHT_BLOCK_BIT | BomberGame.PLAYER_BIT;
 		fdef.shape = shape;
 		fdef.isSensor = true;
 		

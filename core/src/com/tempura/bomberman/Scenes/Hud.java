@@ -20,6 +20,7 @@ public class Hud{
 	
 	private Integer worldTimer;
 	private float timeCount;
+
 	private Integer player1Score;
 	private Integer player2Score;
 	private FreeTypeFontGenerator fontGenerator;
@@ -33,7 +34,7 @@ public class Hud{
 	Label ScoreLabel1;
 	Label ScoreLabel2;
 	
-	 	public Hud(SpriteBatch batch) {
+	public Hud(SpriteBatch batch) {
 		worldTimer = 300;
 		player1Score = 0;
 		player2Score = 0;
@@ -54,8 +55,7 @@ public class Hud{
 		table.top();
 		table.setFillParent(true);
 		Label.LabelStyle fontStyle =new Label.LabelStyle(font, Color.WHITE);
-		
-		
+			
 		player1 = new Label("Player 1", fontStyle);
 		player2 = new Label("Player 2", fontStyle);
 		timeLabel = new Label("Time", fontStyle);
@@ -73,8 +73,30 @@ public class Hud{
 		table.add(ScoreLabel2).expandX().pad(1);
 		table.add(countdownLabel).expandX().pad(1);
 		
-		stage.addActor(table);	
-		
+		stage.addActor(table);
+	}
+	
+	public void setScore1(int score) {
+		player1Score += score;
+		ScoreLabel1.setText(player1Score);
+	}
+	
+	public void setScore2(int score) {
+		player2Score += score;
+		ScoreLabel2.setText(player2Score);
+	}
+
+	public void setTimer() {
+		worldTimer -= Gdx.graphics.getDeltaTime();
+		countdownLabel.setText((int) worldTimer);
+	}
+	
+	public void resetTimer() {
+		worldTimer = 300;
+	}
+	
+	public float getTimer() {
+		return worldTimer;
 	}
 	 	public void update(float dt) {
 	 	timeCount += dt;

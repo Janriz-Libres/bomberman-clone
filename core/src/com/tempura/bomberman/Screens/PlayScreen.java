@@ -1,12 +1,11 @@
 package com.tempura.bomberman.Screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -24,6 +23,7 @@ import com.tempura.bomberman.Effects.Explosion;
 import com.tempura.bomberman.Objects.Bomb;
 import com.tempura.bomberman.Objects.HeavyBlock;
 import com.tempura.bomberman.Objects.LightBlock;
+import com.tempura.bomberman.Objects.Powerup;
 import com.tempura.bomberman.Scenes.Hud;
 import com.tempura.bomberman.Tools.WorldContactListener;
 
@@ -50,7 +50,11 @@ public class PlayScreen extends BomberScreen {
 	private Array<Bomb> bombs;
 	public Array<Explosion> explosions;
 	
+	public Array<Powerup> creatablePowerups;
+	public Array<Powerup> powerups;
 	private Array<Body> destroyableBodies;
+	
+	private Music music;
 	
 	public PlayScreen (BomberGame game) {
 		atlas = new TextureAtlas("sprites/bomber_party.atlas");
@@ -59,7 +63,7 @@ public class PlayScreen extends BomberScreen {
 		gameCam = new OrthographicCamera();
 		gamePort = new FitViewport(BomberGame.V_WIDTH / BomberGame.PPM,
 			BomberGame.V_HEIGHT / BomberGame.PPM, gameCam);
-		hud = new Hud(game.batch);
+		hud = game.hud;
 	
 		gameCam.setToOrtho(false, gamePort.getWorldWidth(), gamePort.getWorldHeight());
 		
@@ -75,12 +79,57 @@ public class PlayScreen extends BomberScreen {
 		
 		bombs = new Array<>();
 		explosions = new Array<>();
+		
+		creatablePowerups = new Array<>();
+		powerups = new Array<>();
 		destroyableBodies = new Array<>();
+		
+		music = Gdx.audio.newMusic(Gdx.files.internal("music/BusyDay.wav"));
+		music.setLooping(true);
+		music.setVolume(0.6f);
+		music.play();
 		
 		new HeavyBlock(this);
 		new LightBlock(this);
 		
 		world.setContactListener(new WorldContactListener(this));
+	}
+	
+	public void destroyPlayer(Body body) {
+		if (!destroyableBodies.contains(body, true)) destroyableBodies.add(body);
+		
+		boolean playerDead;
+		boolean enemyDead;
+		
+		if (player != null) playerDead = player.isDead ? true : false;
+		else playerDead = true;
+		
+		if (enemy != null) enemyDead = enemy.isDead ? true : false;
+		else enemyDead = true;
+		
+		if (playerDead && enemyDead) {
+			player.dispose();
+			enemy.dispose();
+			player = null;
+			enemy = null;
+			return;
+		}
+		
+		if (playerDead) {
+			player.dispose();
+			player = null;
+			hud.setScore2(1);
+		}
+		
+		if (enemyDead) {
+			enemy.dispose();
+			enemy = null;
+			hud.setScore1(1);
+		}
+	}
+	
+	public void addPowerup(Powerup powerup) {
+		powerups.add(powerup);
 	}
 	
 	public Array<Body> getDestroyables() {
@@ -112,20 +161,44 @@ public class PlayScreen extends BomberScreen {
 	}
 	
 	private void update(float dt) {
-		player.handleInput();
-		enemy.handleInput();
+		if (player == null || enemy == null || hud.getTimer() <= 0) {
+			hud.resetTimer();
+			music.stop();
+			
+			PlayScreen anotherScreen = new PlayScreen(game);
+			game.setScreen(anotherScreen);
+		}
 		
 		world.step(1/60f, 6, 2);
+		
+		for (Powerup powerup : creatablePowerups) {
+			powerup.defineBodies();
+			creatablePowerups.removeValue(powerup, true);
+		}
+		
 		for (Body body : destroyableBodies) {
 			world.destroyBody(body);
 			destroyableBodies.removeValue(body, true);
 		}
 		
-		player.update();
-		enemy.update();
+		if (player != null) {
+			player.handleInput();
+			player.update();
+		}
+		
+		if (enemy!= null) {
+			enemy.handleInput();
+			enemy.update();
+		}
+		
 		for (Bomb bomb : bombs) bomb.update();
 		for (Explosion explosion : explosions) explosion.update();
 		
+		if (hud.getTimer() <= 60 && player != null & enemy != null) {
+			player.maximizeStats();
+			enemy.maximizeStats();
+		}
+
 		hud.update(dt);
 		gameCam.update();
 		renderer.setView(gameCam);
@@ -135,7 +208,7 @@ public class PlayScreen extends BomberScreen {
 	public void render(float delta) {
 		update(delta);
 		
-		ScreenUtils.clear(Color.BLACK);
+		ScreenUtils.clear(Color.GRAY);
 		
 		renderer.render();
 		
@@ -145,8 +218,9 @@ public class PlayScreen extends BomberScreen {
 		game.batch.begin();
 		
 		for (Bomb bomb : bombs) bomb.draw(game.batch);
-		player.draw(game.batch);
-		enemy.draw(game.batch);
+		for (Powerup powerup: powerups) powerup.draw(game.batch);
+		if (player != null) player.draw(game.batch);
+		if (enemy != null) enemy.draw(game.batch);
 		for (Explosion explosion : explosions) explosion.render(game.batch);
 		
 		game.batch.end();
@@ -166,6 +240,8 @@ public class PlayScreen extends BomberScreen {
 		renderer.dispose();
 		world.dispose();
 		b2dr.dispose();
+		music.dispose();
+		if (player != null) player.dispose();
+		if (enemy != null) enemy.dispose();
 	}
-
 }
