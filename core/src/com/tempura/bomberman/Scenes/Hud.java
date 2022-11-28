@@ -11,8 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.tempura.bomberman.BomberGame;
+
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
 public class Hud{
 	public Stage stage;
@@ -87,7 +87,7 @@ public class Hud{
 	}
 
 	public void setTimer() {
-		worldTimer -= Gdx.graphics.getDeltaTime();
+		//worldTimer -= Gdx.graphics.getDeltaTime();
 		countdownLabel.setText((int) worldTimer);
 	}
 	
