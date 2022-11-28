@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -26,18 +28,18 @@ public class Hud{
 	private FreeTypeFontGenerator.FreeTypeFontParameter fontParameter;
 	private BitmapFont font;
 	
-	Label player1;
-	Label player2;
+	Image player1;
+	Image player2;
 	Label timeLabel;
 	Label countdownLabel;
 	Label ScoreLabel1;
 	Label ScoreLabel2;
 	
-	 	public Hud(SpriteBatch batch) {
+	 	public Hud(SpriteBatch batch, int playerScore, int enemyScore, TextureRegion p1, TextureRegion p2) {
 		worldTimer = 300;
-		player1Score = 0;
-		player2Score = 0;
-		
+		player1Score = playerScore;
+		player2Score = enemyScore;
+	
 		viewport = new FitViewport(BomberGame.V_WIDTH,
 				(BomberGame.V_HEIGHT + 60), new OrthographicCamera());
 		stage = new Stage(viewport,batch);
@@ -55,9 +57,8 @@ public class Hud{
 		table.setFillParent(true);
 		Label.LabelStyle fontStyle =new Label.LabelStyle(font, Color.WHITE);
 		
-		
-		player1 = new Label("Player 1", fontStyle);
-		player2 = new Label("Player 2", fontStyle);
+		player1 = new Image(p1);
+		player2 = new Image(p2);
 		timeLabel = new Label("Time", fontStyle);
 		countdownLabel = new Label(String.format("%03d", worldTimer), fontStyle);
 		ScoreLabel1 = new Label(String.format("%01d", player1Score), fontStyle);
@@ -89,11 +90,11 @@ public class Hud{
 	 	public void addScore(int playerNum) {
 	 		if(playerNum == 1) {
 	 			player1Score++;
-	 			player1.setText(String.format("%01d", player1Score));
+	 			ScoreLabel1.setText(String.format("%01d", player1Score));
 	 		}
 	 		if(playerNum == 2) {
 	 			player2Score++;
-	 			player2.setText(String.format("%01d", player2Score));
+	 			ScoreLabel2.setText(String.format("%01d", player2Score));
 	 		}
 	 	}
 	 	public void dispose() {

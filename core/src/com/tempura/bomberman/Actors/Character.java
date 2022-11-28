@@ -42,6 +42,7 @@ public abstract class Character extends Sprite implements GameObject {
 	
 	protected int maxBombs;
 	protected int currentBombs;
+	protected int score;
 	
 	public Character(World world, TiledMap map, PlayScreen screen) {
 		super(screen.getAtlas().findRegion("human"));
@@ -50,6 +51,7 @@ public abstract class Character extends Sprite implements GameObject {
 		this.screen = screen;
 		this.maxBombs = 1;
 		this.currentBombs = 0;
+		this.score = 0;
 		
 		velocity = new Vector2(0, 0);
 		
@@ -144,5 +146,14 @@ public abstract class Character extends Sprite implements GameObject {
 				stateTimer + Gdx.graphics.getDeltaTime() : 0;
 		previousState = currentState;
 		return region;
+	}
+	public int getScore() {
+		return this.score;
+	}
+	public void setScore(int value) {
+		this.score = value;
+	}
+	public TextureRegion getIdleDownTexture() {
+		return this.playerIdleDown;
 	}
 }
