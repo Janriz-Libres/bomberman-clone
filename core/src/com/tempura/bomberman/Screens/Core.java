@@ -22,6 +22,7 @@ public class Core extends ApplicationAdapter {
 
 	@Override
 	public void render() {
+		super.render();
 		ScreenUtils.clear(Color.BLACK);
 		batch.begin();
 		batch.draw(img,67,-15);
