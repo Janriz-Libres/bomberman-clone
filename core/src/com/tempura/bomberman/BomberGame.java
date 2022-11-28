@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.tempura.bomberman.Scenes.Hud;
+import com.tempura.bomberman.Screens.LogoScreen;
 import com.tempura.bomberman.Screens.PlayScreen;
 import com.tempura.bomberman.Screens.menuTemp;
 
@@ -29,18 +30,18 @@ public class BomberGame extends Game {
 	
 	public SpriteBatch batch;
 	public Hud hud;
+	
 	public Music music;
 	public Music victoryMusic;
 	
 	public PlayScreen playScreen;
+	public LogoScreen logoScreen;
 	public menuTemp menu;
+	
 	private TextureAtlas atlas;
-	
-	
 	
 	@Override
 	public void create () {
-		
 		fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("sprites\\bm.ttf"));
 		fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 		fontParameter.size = 72;
@@ -52,9 +53,6 @@ public class BomberGame extends Game {
 		batch = new SpriteBatch();
 		
 		atlas = new TextureAtlas("sprites/bomber_party.atlas");
-
-		menu = new menuTemp(this);
-		this.setScreen(menu);
 		
 		Sprite player = new Sprite(atlas.findRegion("human"));
 		hud = new Hud(batch, 0, 0, new TextureRegion(player.getTexture(), 2 + 16, 2, 16, 16),
@@ -65,10 +63,14 @@ public class BomberGame extends Game {
 		music.setVolume(0.4f);
 		
 		victoryMusic = Gdx.audio.newMusic(Gdx.files.internal("music/VictoryMusic.wav"));
-		victoryMusic.setLooping(true);
+		victoryMusic.setLooping(false);
 		victoryMusic.setVolume(0.4f);
 		
 		playScreen = new PlayScreen(this);
+		menu = new menuTemp(this);
+		logoScreen = new LogoScreen(this);
+		
+		this.setScreen(logoScreen);
 	}
 
 	@Override
@@ -82,5 +84,10 @@ public class BomberGame extends Game {
 		menu.dispose();
 		playScreen.dispose();
 		hud.dispose();
+		music.dispose();
+		victoryMusic.dispose();
+		fontGenerator.dispose();
+		font.dispose();
+		atlas.dispose();
 	}
 }
