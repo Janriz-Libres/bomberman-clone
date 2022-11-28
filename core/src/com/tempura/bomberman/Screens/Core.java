@@ -4,13 +4,11 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class Core extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
-	Stage stage;
 	private SplashWorker splashWorker;
 	
 	@Override
@@ -25,7 +23,7 @@ public class Core extends ApplicationAdapter {
 		super.render();
 		ScreenUtils.clear(Color.BLACK);
 		batch.begin();
-		batch.draw(img,67,-15);
+		batch.draw(img,100,55);
 		batch.end();
 	}
 	
