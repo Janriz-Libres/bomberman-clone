@@ -198,9 +198,8 @@ public class PlayScreen extends BomberScreen {
 			player.maximizeStats();
 			enemy.maximizeStats();
 		}
-		
-		hud.setTimer();
-		
+
+		hud.update(dt);
 		gameCam.update();
 		renderer.setView(gameCam);
 	}
