@@ -46,6 +46,7 @@ public class PlayScreen extends BomberScreen {
 	
 	private Player player;
 	private Enemy enemy;
+	public boolean roundIsOver;
 	
 	private Array<Bomb> bombs;
 	public Array<Explosion> explosions;
@@ -63,8 +64,9 @@ public class PlayScreen extends BomberScreen {
 		gameCam = new OrthographicCamera();
 		gamePort = new FitViewport(BomberGame.V_WIDTH / BomberGame.PPM,
 			BomberGame.V_HEIGHT / BomberGame.PPM, gameCam);
+		
 		hud = game.hud;
-	
+
 		gameCam.setToOrtho(false, gamePort.getWorldWidth(), gamePort.getWorldHeight());
 		
 		world = new World(new Vector2(0, 0), true);
@@ -77,6 +79,7 @@ public class PlayScreen extends BomberScreen {
 		player = new Player(world, map, this);
 		enemy = new Enemy(world, map, this);
 		
+		hud = new Hud(game.batch, player.getScore(), enemy.getScore(), player.getIdleDownTexture(), enemy.getIdleDownTexture());
 		bombs = new Array<>();
 		explosions = new Array<>();
 		
@@ -158,6 +161,17 @@ public class PlayScreen extends BomberScreen {
 	
 	public TiledMap getMap() {
 		return map;
+	}
+	public void isWinner() {
+		if(player.getScore() >= 3) {
+			player.setScore(0);
+			game.setScreen(new GameOverScreen(game,1));
+		}
+		if(enemy.getScore() >= 3) {
+			player.setScore(0);
+			game.setScreen(new GameOverScreen(game,2));
+		}
+		
 	}
 	
 	private void update(float dt) {

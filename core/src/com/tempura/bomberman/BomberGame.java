@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.tempura.bomberman.Scenes.Hud;
 import com.tempura.bomberman.Screens.PlayScreen;
+import com.tempura.bomberman.Screens.menuTemp;
 
 public class BomberGame extends Game {
 	public static final int V_WIDTH = 240;
@@ -22,10 +23,12 @@ public class BomberGame extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+
+		menuTemp menu = new menuTemp(this);
+		this.setScreen(menu);
 		hud = new Hud(batch);
 		
 		playScreen = new PlayScreen(this);
-		this.setScreen(playScreen);
 	}
 
 	@Override

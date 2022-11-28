@@ -49,6 +49,7 @@ public abstract class Character extends Sprite implements GameObject, Disposable
 	
 	protected int maxBombs;
 	protected int currentBombs;
+	protected int score;
 	
 	private float speed;
 	protected int range;
@@ -60,6 +61,7 @@ public abstract class Character extends Sprite implements GameObject, Disposable
 		this.screen = screen;
 		this.maxBombs = 1;
 		this.currentBombs = 0;
+		this.score = 0;
 		
 		velocity = new Vector2(0, 0);
 		speed = 0.5f;
@@ -187,6 +189,16 @@ public abstract class Character extends Sprite implements GameObject, Disposable
 		previousState = currentState;
 		return region;
 	}
+
+	public int getScore() {
+		return this.score;
+	}
+	public void setScore(int value) {
+		this.score = value;
+	}
+	public TextureRegion getIdleDownTexture() {
+		return this.playerIdleDown;
+  }
 	
 	@Override
 	public void dispose() {
