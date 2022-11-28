@@ -1,7 +1,5 @@
 package com.tempura.bomberman.Screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -55,8 +53,6 @@ public class PlayScreen extends BomberScreen {
 	public Array<Powerup> powerups;
 	private Array<Body> destroyableBodies;
 	
-	
-	
 	public PlayScreen (BomberGame game) {
 		atlas = new TextureAtlas("sprites/bomber_party.atlas");
 		this.game = game;
@@ -85,8 +81,6 @@ public class PlayScreen extends BomberScreen {
 		creatablePowerups = new Array<>();
 		powerups = new Array<>();
 		destroyableBodies = new Array<>();
-		
-		
 		
 		new HeavyBlock(this);
 		new LightBlock(this);
@@ -254,8 +248,9 @@ public class PlayScreen extends BomberScreen {
 		renderer.dispose();
 		world.dispose();
 		b2dr.dispose();
-		game.music.dispose();
 		if (player != null) player.dispose();
 		if (enemy != null) enemy.dispose();
+		hud.dispose();
+		atlas.dispose();
 	}
 }

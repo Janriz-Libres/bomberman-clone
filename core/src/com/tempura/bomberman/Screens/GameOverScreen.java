@@ -17,7 +17,6 @@ public class GameOverScreen implements Screen {
 		private Stage stage;
 		private BomberGame game;
 		
-		
 		public GameOverScreen(BomberGame game, int player) {
 			this.game = game;
 			
@@ -35,7 +34,7 @@ public class GameOverScreen implements Screen {
 			table.setFillParent(true);
 			
 			Label gameoverLabel = new Label("The Winner is  Player " + player + "!!!" , style);
-			Label returnLabel = new Label("press any key to return to main menu", style);
+			Label returnLabel = new Label("Press/click the screen to return to main menu", style);
 		
 			table.add(gameoverLabel).expandX();
 			table.row();
@@ -56,14 +55,13 @@ public class GameOverScreen implements Screen {
 		ScreenUtils.clear(Color.GRAY);
 		
 		if(Gdx.input.justTouched()) {
+			game.hud.resetScores();
 			game.victoryMusic.stop();
 			game.menu.menuMusic.play();
 			game.setScreen(game.menu);
-
-		
 		}
+		
 		stage.draw();
-	
 	}
 
 	public void update(float delta) {
