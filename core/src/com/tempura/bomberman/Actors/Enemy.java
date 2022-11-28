@@ -65,7 +65,7 @@ public class Enemy extends Character  {
 
 	@Override
 	protected void dropBomb() {
-		if (Gdx.input.isKeyJustPressed(Keys.ENTER) && currentBombs < maxBombs) {
+		if (Gdx.input.isKeyJustPressed(Keys.ENTER) && currentBombs < maxBombs && !isDead) {
 			int x = (int) (b2body.getPosition().x * BomberGame.PPM / 16);
 			int y = (int) (b2body.getPosition().y * BomberGame.PPM / 16);
 			float xSum = x + 0.5f;
@@ -74,7 +74,8 @@ public class Enemy extends Character  {
 			float finalPosY = ySum * 16 / BomberGame.PPM;
 			
 			screen.getBombs().add(new Bomb(screen, finalPosX, finalPosY,
-					BomberGame.ENEMY_BOMB_BIT, Bomb.Team.ENEMY));
+					BomberGame.ENEMY_BOMB_BIT, Bomb.Team.ENEMY, range));
+			dropSFX.play();
 			
 			currentBombs += 1;
 		}
@@ -115,9 +116,9 @@ public class Enemy extends Character  {
 		fdef.filter.categoryBits = BomberGame.PLAYER_BIT;
 		fdef.filter.maskBits = BomberGame.DEFAULT_BIT | BomberGame.HEAVY_BLOCK_BIT |
 				BomberGame.LIGHT_BLOCK_BIT | BomberGame.PLAYER_BOMB_BIT |
-				BomberGame.OPAQUE_BOMB_BIT | BomberGame.EXPLOSION_BIT;
+				BomberGame.OPAQUE_BOMB_BIT | BomberGame.EXPLOSION_BIT | BomberGame.POWERUP_BIT;
 		fdef.shape = shape;
 		
-		b2body.createFixture(fdef);
+		b2body.createFixture(fdef).setUserData(this);
 	}
 }

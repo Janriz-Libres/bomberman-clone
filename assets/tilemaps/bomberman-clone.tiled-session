@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "bomb_party_v5.tsx",
+    "activeFile": "level1.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -18,7 +18,7 @@
         },
         "level1.tmx": {
             "scale": 2,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
                 "x": 110,
                 "y": 109.5
@@ -38,8 +38,8 @@
     ],
     "project": "bomberman-clone.tiled-project",
     "recentFiles": [
-        "level1.tmx",
         "bomb_party_v5.tsx",
+        "level1.tmx",
         "C:/Users/leonm/Downloads/explosion.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",

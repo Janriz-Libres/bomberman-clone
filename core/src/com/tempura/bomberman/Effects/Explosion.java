@@ -1,6 +1,7 @@
 package com.tempura.bomberman.Effects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -11,12 +12,12 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-
+import com.badlogic.gdx.utils.Disposable;
 import com.tempura.bomberman.BomberGame;
 import com.tempura.bomberman.Screens.PlayScreen;
 import com.tempura.bomberman.Tools.GameObject;
 
-public class Explosion implements GameObject {
+public class Explosion implements GameObject, Disposable {
 	
 	protected enum ExplosionType { CENTER, ARM, TAIL };
 
@@ -27,6 +28,7 @@ public class Explosion implements GameObject {
 	
 	private Array<ExplosionTile> tiles;
 	private Vector2 origin;
+	private Sound explosionSFX;
 	
 	private int range;
 	private float stateTimer;
@@ -35,7 +37,7 @@ public class Explosion implements GameObject {
 	private static final int heavyTileId1 = 71;
 	private static final int heavyTileId2 = 86;
 	
-	public Explosion(PlayScreen screen, Vector2 origin) {
+	public Explosion(PlayScreen screen, Vector2 origin, int range) {
 		this.screen = screen;
 		this.origin = origin;
 		this.world = screen.getWorld();
@@ -44,7 +46,10 @@ public class Explosion implements GameObject {
 		map = screen.getMap();
 		tiles = new Array<>();
 		
-		range = 3;
+		explosionSFX = Gdx.audio.newSound(Gdx.files.internal("sfx/explosion.wav"));
+		explosionSFX.play();
+		
+		this.range = range;
 		stateTimer = 0;
 		
 		defineBodies();
@@ -57,6 +62,7 @@ public class Explosion implements GameObject {
 		if (stateTimer >= 0.5) {
 			screen.explosions.removeValue(this, true);
 			for (ExplosionTile tile : tiles) world.destroyBody(tile.b2body);
+			dispose();
 		}
 	}
 	
@@ -117,5 +123,10 @@ public class Explosion implements GameObject {
 		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
 		return layer.getCell((int) (coor.x * BomberGame.PPM / 16),
 				(int) (coor.y * BomberGame.PPM / 16));
+	}
+
+	@Override
+	public void dispose() {
+		explosionSFX.dispose();
 	}
 }

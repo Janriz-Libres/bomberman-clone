@@ -1,6 +1,7 @@
 package com.tempura.bomberman.Objects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Disposable;
 import com.tempura.bomberman.BomberGame;
 import com.tempura.bomberman.Effects.Explosion;
 import com.tempura.bomberman.Screens.PlayScreen;
@@ -30,14 +32,16 @@ public class Bomb extends Sprite {
 	private Fixture fixture;
 	
 	private float stateTimer;
+	private int range;
 	
-	public Bomb(PlayScreen screen, float initX, float initY, short categoryBit, Team team) {
+	public Bomb(PlayScreen screen, float initX, float initY, short categoryBit, Team team, int range) {
 		super(screen.getAtlas().findRegion("big_bomb"));
 		
 		this.team = team;
 		this.world = screen.getWorld();
 		this.screen = screen;
 		this.stateTimer = 0;
+		this.range = range;
 		
 		Array<TextureRegion> frames = new Array<>();
 		for (int i = 0; i <= 5; i++) {
@@ -65,7 +69,7 @@ public class Bomb extends Sprite {
 			if (team == Team.PLAYER) screen.getPlayer().subtractBombCount();
 			else screen.getEnemy().subtractBombCount();
 			
-			screen.explosions.add(new Explosion(screen, b2body.getPosition()));
+			screen.explosions.add(new Explosion(screen, b2body.getPosition(), range));
 			world.destroyBody(b2body);
 		}
 	}
