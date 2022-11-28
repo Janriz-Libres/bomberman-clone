@@ -75,6 +75,7 @@ public class Enemy extends Character  {
 			
 			screen.getBombs().add(new Bomb(screen, finalPosX, finalPosY,
 					BomberGame.ENEMY_BOMB_BIT, Bomb.Team.ENEMY, range));
+			dropSFX.play();
 			
 			currentBombs += 1;
 		}
@@ -115,7 +116,7 @@ public class Enemy extends Character  {
 		fdef.filter.categoryBits = BomberGame.PLAYER_BIT;
 		fdef.filter.maskBits = BomberGame.DEFAULT_BIT | BomberGame.HEAVY_BLOCK_BIT |
 				BomberGame.LIGHT_BLOCK_BIT | BomberGame.PLAYER_BOMB_BIT |
-				BomberGame.OPAQUE_BOMB_BIT | BomberGame.EXPLOSION_BIT;
+				BomberGame.OPAQUE_BOMB_BIT | BomberGame.EXPLOSION_BIT | BomberGame.POWERUP_BIT;
 		fdef.shape = shape;
 		
 		b2body.createFixture(fdef).setUserData(this);

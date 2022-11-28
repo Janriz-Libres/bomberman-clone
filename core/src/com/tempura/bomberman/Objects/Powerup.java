@@ -1,5 +1,7 @@
 package com.tempura.bomberman.Objects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -9,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-
+import com.badlogic.gdx.utils.Disposable;
 import com.tempura.bomberman.BomberGame;
 import com.tempura.bomberman.Screens.PlayScreen;
 import com.tempura.bomberman.Tools.GameObject;
@@ -53,6 +55,8 @@ public class Powerup extends Sprite implements GameObject {
 	}
 	
 	public void takeEffect(Character player) {
+		player.powerupSFX.play();
+		
 		switch (type) {
 		case RANGE:
 			player.addRange();
@@ -82,6 +86,6 @@ public class Powerup extends Sprite implements GameObject {
 		fdef.shape = shape;
 		fdef.isSensor = true;
 		
-		b2body.createFixture(fdef);
+		b2body.createFixture(fdef).setUserData(this);
 	}
 }

@@ -1,5 +1,7 @@
 package com.tempura.bomberman.Screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -52,6 +54,8 @@ public class PlayScreen extends BomberScreen {
 	public Array<Powerup> powerups;
 	private Array<Body> destroyableBodies;
 	
+	private Music music;
+	
 	public PlayScreen (BomberGame game) {
 		atlas = new TextureAtlas("sprites/bomber_party.atlas");
 		this.game = game;
@@ -80,6 +84,11 @@ public class PlayScreen extends BomberScreen {
 		powerups = new Array<>();
 		destroyableBodies = new Array<>();
 		
+		music = Gdx.audio.newMusic(Gdx.files.internal("music/BusyDay.wav"));
+		music.setLooping(true);
+		music.setVolume(0.6f);
+		music.play();
+		
 		new HeavyBlock(this);
 		new LightBlock(this);
 		
@@ -99,17 +108,21 @@ public class PlayScreen extends BomberScreen {
 		else enemyDead = true;
 		
 		if (playerDead && enemyDead) {
+			player.dispose();
+			enemy.dispose();
 			player = null;
 			enemy = null;
 			return;
 		}
 		
 		if (playerDead) {
+			player.dispose();
 			player = null;
 			hud.setScore2(1);
 		}
 		
 		if (enemyDead) {
+			enemy.dispose();
 			enemy = null;
 			hud.setScore1(1);
 		}
@@ -150,6 +163,8 @@ public class PlayScreen extends BomberScreen {
 	private void update(float dt) {
 		if (player == null || enemy == null || hud.getTimer() <= 0) {
 			hud.resetTimer();
+			music.stop();
+			
 			PlayScreen anotherScreen = new PlayScreen(game);
 			game.setScreen(anotherScreen);
 		}
@@ -226,5 +241,8 @@ public class PlayScreen extends BomberScreen {
 		renderer.dispose();
 		world.dispose();
 		b2dr.dispose();
+		music.dispose();
+		if (player != null) player.dispose();
+		if (enemy != null) enemy.dispose();
 	}
 }

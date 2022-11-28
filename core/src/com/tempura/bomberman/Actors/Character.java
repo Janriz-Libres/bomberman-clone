@@ -1,6 +1,7 @@
 package com.tempura.bomberman.Actors;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -10,11 +11,12 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Disposable;
 import com.tempura.bomberman.BomberGame;
 import com.tempura.bomberman.Screens.PlayScreen;
 import com.tempura.bomberman.Tools.GameObject;
 
-public abstract class Character extends Sprite implements GameObject {
+public abstract class Character extends Sprite implements GameObject, Disposable {
 	
 	public enum State { IDLE, RIGHT, UP, DOWN };
 	public State previousState;
@@ -36,6 +38,9 @@ public abstract class Character extends Sprite implements GameObject {
 	protected Animation<TextureRegion> playerRight;
 	protected Animation<TextureRegion> playerUp;
 	protected Animation<TextureRegion> playerDown;
+	
+	protected Sound dropSFX;
+	public Sound powerupSFX;
 
 	protected float stateTimer;
 	private float deadTimer;
@@ -59,6 +64,9 @@ public abstract class Character extends Sprite implements GameObject {
 		velocity = new Vector2(0, 0);
 		speed = 0.5f;
 		range = 1;
+		
+		dropSFX = Gdx.audio.newSound(Gdx.files.internal("sfx/drop.wav"));
+		powerupSFX = Gdx.audio.newSound(Gdx.files.internal("sfx/powerup.wav"));
 		
 		currentState = State.IDLE;
 		previousState = State.IDLE;
@@ -178,5 +186,11 @@ public abstract class Character extends Sprite implements GameObject {
 				stateTimer + Gdx.graphics.getDeltaTime() : 0;
 		previousState = currentState;
 		return region;
+	}
+	
+	@Override
+	public void dispose() {
+		dropSFX.dispose();
+		powerupSFX.dispose();
 	}
 }
