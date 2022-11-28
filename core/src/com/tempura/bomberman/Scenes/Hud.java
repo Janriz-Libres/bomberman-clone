@@ -22,12 +22,9 @@ public class Hud{
 	
 	private Integer worldTimer;
 	private float timeCount;
-
+	BomberGame game;
 	private Integer player1Score;
 	private Integer player2Score;
-	private FreeTypeFontGenerator fontGenerator;
-	private FreeTypeFontGenerator.FreeTypeFontParameter fontParameter;
-	private BitmapFont font;
 	
 	Image player1;
 	Image player2;
@@ -36,27 +33,22 @@ public class Hud{
 	Label ScoreLabel1;
 	Label ScoreLabel2;
 	
-	public Hud(SpriteBatch batch, int playerScore, int enemyScore, TextureRegion p1, TextureRegion p2) {
+	public Hud(SpriteBatch batch, int playerScore, int enemyScore, TextureRegion p1, TextureRegion p2, BomberGame game) {
+		this.game = game;
 		worldTimer = 300;
 		player1Score = playerScore;
 		player2Score = enemyScore;
+		
 	
 		viewport = new FitViewport(BomberGame.V_WIDTH,
 				(BomberGame.V_HEIGHT + 60), new OrthographicCamera());
 		stage = new Stage(viewport,batch);
 		
-		fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("sprites\\bm.ttf"));
-		fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-		fontParameter.size = 72;
-		fontParameter.borderWidth = 5.0f;
-		fontParameter.borderColor = Color.BLACK;
-		font = fontGenerator.generateFont(fontParameter);
-		font.getData().setScale(0.12f);
 		
 		Table table = new Table();
 		table.top();
 		table.setFillParent(true);
-		Label.LabelStyle fontStyle =new Label.LabelStyle(font, Color.WHITE);
+		Label.LabelStyle fontStyle =new Label.LabelStyle(game.font, Color.WHITE);
 		
 		player1 = new Image(p1);
 		player2 = new Image(p2);
@@ -88,7 +80,13 @@ public class Hud{
 		player2Score += score;
 		ScoreLabel2.setText(player2Score);
 	}
-
+	public int getScore1() {
+		return player1Score;
+	}
+	
+	public int getScore2() {
+		return player2Score;
+	}
 	public void setTimer() {
 		//worldTimer -= Gdx.graphics.getDeltaTime();
 		countdownLabel.setText((int) worldTimer);
@@ -111,16 +109,6 @@ public class Hud{
 	 		}
 	 	}
 	 	
-	 	public void addScore(int playerNum) {
-	 		if(playerNum == 1) {
-	 			player1Score++;
-	 			ScoreLabel1.setText(String.format("%01d", player1Score));
-	 		}
-	 		if(playerNum == 2) {
-	 			player2Score++;
-	 			ScoreLabel2.setText(String.format("%01d", player2Score));
-	 		}
-	 	}
 	 	public void dispose() {
 	 		stage.dispose();
 	 	}

@@ -55,7 +55,7 @@ public class PlayScreen extends BomberScreen {
 	public Array<Powerup> powerups;
 	private Array<Body> destroyableBodies;
 	
-	public Music music;
+	
 	
 	public PlayScreen (BomberGame game) {
 		atlas = new TextureAtlas("sprites/bomber_party.atlas");
@@ -86,9 +86,7 @@ public class PlayScreen extends BomberScreen {
 		powerups = new Array<>();
 		destroyableBodies = new Array<>();
 		
-		music = Gdx.audio.newMusic(Gdx.files.internal("music/BusyDay.wav"));
-		music.setLooping(true);
-		music.setVolume(0.6f);
+		
 		
 		new HeavyBlock(this);
 		new LightBlock(this);
@@ -161,27 +159,30 @@ public class PlayScreen extends BomberScreen {
 		return map;
 	}
 	public void isWinner() {
-		if(player.getScore() >= 3) {
+		if(hud.getScore1() >= 3) {
 			player.setScore(0);
+			game.music.stop();
 			game.setScreen(new GameOverScreen(game,1));
 		}
-		if(enemy.getScore() >= 3) {
-			player.setScore(0);
+		else if(hud.getScore2() >= 3) {
+			enemy.setScore(0);
+			game.music.stop();
 			game.setScreen(new GameOverScreen(game,2));
 		}
+		return;
 		
 	}
 	
 	private void update(float dt) {
 		if (player == null || enemy == null || hud.getTimer() <= 0) {
-			hud.resetTimer();
-			music.stop();
-			music.play();
+			game.music.stop();
+			game.music.play();
 			
+			hud.resetTimer();
 			PlayScreen anotherScreen = new PlayScreen(game);
 			game.setScreen(anotherScreen);
 		}
-		
+		isWinner();
 		world.step(1/60f, 6, 2);
 		
 		for (Powerup powerup : creatablePowerups) {
@@ -253,7 +254,7 @@ public class PlayScreen extends BomberScreen {
 		renderer.dispose();
 		world.dispose();
 		b2dr.dispose();
-		music.dispose();
+		game.music.dispose();
 		if (player != null) player.dispose();
 		if (enemy != null) enemy.dispose();
 	}
