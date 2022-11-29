@@ -44,6 +44,8 @@ public abstract class Character extends Sprite implements GameObject, Disposable
 
 	protected float stateTimer;
 	private float deadTimer;
+	private float speedTimer;
+	
 	protected boolean isMovingRight;
 	public boolean isDead;
 	
@@ -72,8 +74,11 @@ public abstract class Character extends Sprite implements GameObject, Disposable
 		
 		currentState = State.IDLE;
 		previousState = State.IDLE;
+		
 		deadTimer = 0;
 		stateTimer = 0;
+		speedTimer = 0;
+		
 		isMovingRight = true;
 		isDead = false;
 		
@@ -94,6 +99,7 @@ public abstract class Character extends Sprite implements GameObject, Disposable
 	
 	public void boostSpeed() {
 		this.speed = 1;
+		speedTimer = 10;
 	}
 	
 	public void setToDie() {
@@ -141,6 +147,12 @@ public abstract class Character extends Sprite implements GameObject, Disposable
 		
 		if (isDead) deadTimer += Gdx.graphics.getDeltaTime();
 		if (deadTimer >= 2) screen.destroyPlayer(b2body);
+		
+		if (speedTimer > 0) speedTimer -= Gdx.graphics.getDeltaTime();
+		else {
+			speed = 0.5f;
+			speedTimer = 0;
+		}
 	}
 	
 	private TextureRegion getIdleDirection() {

@@ -1,7 +1,5 @@
 package com.tempura.bomberman.Objects;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,7 +9,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.utils.Disposable;
 import com.tempura.bomberman.BomberGame;
 import com.tempura.bomberman.Screens.PlayScreen;
 import com.tempura.bomberman.Tools.GameObject;
